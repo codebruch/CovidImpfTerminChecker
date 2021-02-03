@@ -17,6 +17,8 @@ import requests
 import argparse
 import json
 import pandas as pd
+import platform
+
 
 calledTimes = 0
 
@@ -39,7 +41,13 @@ prefs = {"download.default_directory":path}
 
 chrome_options.add_experimental_option("prefs", prefs)
 
-driver = webdriver.Chrome(executable_path='/Users/d039861/Documents/Developments/corona/chromedriver')
+
+if platform.system() == 'Windows':
+    driver = webdriver.Chrome(path+ r"\\chromedriver.exe",options=chrome_options) 
+else:
+    driver = webdriver.Chrome(path+ r"/chromedriver",options=chrome_options) 
+
+
 #//*[@id="app--idDemoSearchField-inner"]
 
 urls = ["https://005-iz.impfterminservice.de/impftermine/service?plz=71636", 
@@ -56,6 +64,7 @@ urls = ["https://005-iz.impfterminservice.de/impftermine/service?plz=71636",
 TerminFound = True
 while TerminFound:
     for url in urls:
+        plz = url.split('plz=')[1]
         if TerminFound == False:
             break
         driver.get(url)
@@ -64,16 +73,16 @@ while TerminFound:
             cookiesButton = driver.find_elements_by_xpath('.//html/body/app-root/div/div/div/div[2]/div[2]/div/div[1]/a')
             if len(cookiesButton) > 0:
                 cookiesButton[0].click()
-                print(str(datetime.now()) + " - cookiesButton click")
+                print(str(datetime.now()) + " @ "+plz+ " - cookiesButton click")
             else:
-                print(str(datetime.now()) + " - cookiesButton notfound")
+                print(str(datetime.now()) + " @ "+plz+ " - cookiesButton notfound")
 
 
         
 
             neinButton = WebDriverWait(driver, 60).until(ec.presence_of_element_located((By.XPATH, './/html/body/app-root/div/app-page-its-login/div/div/div[2]/app-its-login-user/div/div/app-corona-vaccination/div[2]/div/div/label[2]/span')))
             neinButton.click()
-            print(str(datetime.now()) + " - neinButton click")
+            print(str(datetime.now()) + " @ "+plz+ " - neinButton click")
             count = 0
             while count < 3:
                 response = WebDriverWait(driver, 60).until(ec.presence_of_element_located((By.XPATH, './/html/body/app-root/div/app-page-its-login/div/div/div[2]/app-its-login-user/div/div/app-corona-vaccination/div[3]/div/div/div/div[2]/div/div/div')))
@@ -84,25 +93,25 @@ while TerminFound:
                     print(e)
                     continue  
 
-                print(str(datetime.now()) + ' - Antwort: ' + txtTmp +   str(count))
+                print(str(datetime.now()) + " @ "+plz+ ' - Antwort: ' + txtTmp )
             
                 time.sleep(3)
                 count = count + 1
                 if txtTmp != 'Bitte warten, wir suchen verfügbare Termine in Ihrer Region.':
                     if txtTmp == 'Es wurden keine freien Termine in Ihrer Region gefunden. Bitte probieren Sie es später erneut.\n\nSobald genügend Impfstoff und die entsprechenden Kapazitäten vorhanden sind, werden die Impfzentren weitere Termine einstellen.':
-                        print(str(datetime.now()) + " - Kein Termin")
+                        print(str(datetime.now()) + " @ "+plz+" - Kein Termin in " + plz )
                         count = 4
 
                     else:
-                        print(str(datetime.now()) + " - termin?" )
+                        print(str(datetime.now()) + " @ "+plz+ " - termin?" )
                         print(str(txtTmp))
                         TerminFound = False
 
             
         except (TimeoutException):
-            print(str(datetime.now()) + " - timeout nein button not found")
+            print(str(datetime.now()) + " @ "+plz+ " - timeout nein button not found")
 
         
-    print(str(datetime.now()) + " - termin?" )
+    print(str(datetime.now()) + " @ "+plz+ " - termin?" )
 while True:
     	time.sleep(20000)   
