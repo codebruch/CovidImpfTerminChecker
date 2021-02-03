@@ -49,8 +49,8 @@ driver.get("https://001-iz.impfterminservice.de/impftermine/service?plz=69124")
 #driver.maximize_window()
 
 #/html/body/app-root/div/app-page-its-login/div/div/div[2]/app-its-login-user/div/div/app-corona-vaccination/div[2]/div/div/label[2]/span
-
-while True:
+TerminFound = True
+while TerminFound:
     try: 
         time.sleep(2)   
         cookiesButton = driver.find_elements_by_xpath('.//html/body/app-root/div/div/div/div[2]/div[2]/div/div[1]/a')
@@ -90,7 +90,12 @@ while True:
                 else:
                     print(str(datetime.now()) + " - termin?" )
                     print(str(txtTmp))
+                    TerminFound = False
 
 
     except (TimeoutException):
         print(str(datetime.now()) + " - timeout nein button not found")
+
+
+print(str(datetime.now()) + " - termin?" )
+time.sleep(20000)   
