@@ -17,6 +17,7 @@ import requests
 import argparse
 import json
 import pandas as pd
+from playsound import playsound
 
 calledTimes = 0
 
@@ -56,6 +57,7 @@ urls = ["https://005-iz.impfterminservice.de/impftermine/service?plz=71636",
 TerminFound = True
 while TerminFound:
     for url in urls:
+        playsound('huup.mp3')
         if TerminFound == False:
             break
         driver.get(url)
@@ -97,7 +99,7 @@ while TerminFound:
                         print(str(datetime.now()) + " - termin?" )
                         print(str(txtTmp))
                         TerminFound = False
-
+                        playsound('alaarm.mp3')
             
         except (TimeoutException):
             print(str(datetime.now()) + " - timeout nein button not found")
@@ -105,4 +107,4 @@ while TerminFound:
         
     print(str(datetime.now()) + " - termin?" )
 while True:
-    	time.sleep(20000)   
+    time.sleep(20000)   
