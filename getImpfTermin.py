@@ -18,7 +18,7 @@ import argparse
 import json
 import pandas as pd
 import platform
-import playsound
+from playsound import playsound
 
 calledTimes = 0
 
@@ -44,8 +44,13 @@ chrome_options.add_experimental_option("prefs", prefs)
 
 if platform.system() == 'Windows':
     driver = webdriver.Chrome(path+ r"\\chromedriver.exe",options=chrome_options) 
+    huh = path+ r'\\huup.mp3'
+    alaarm = path+ r'\\alaarm.mp3'
 else:
     driver = webdriver.Chrome(path+ r"/chromedriver",options=chrome_options) 
+    huh = path+ r'/huup.mp3'
+    alaarm = path+ r'/alaarm.mp3'
+
 
 
 #//*[@id="app--idDemoSearchField-inner"]
@@ -65,7 +70,7 @@ TerminFound = True
 while TerminFound:
     for url in urls:
         plz = url.split('plz=')[1]
-        playsound('huup.mp3')
+        #playsound(huh)
 
         if TerminFound == False:
             break
@@ -108,7 +113,7 @@ while TerminFound:
                         print(str(datetime.now()) + " @ "+plz+ " - termin?" )
                         print(str(txtTmp))
                         TerminFound = False
-                        playsound('alaarm.mp3')
+                        playsound(alaarm)
             
         except (TimeoutException):
             print(str(datetime.now()) + " @ "+plz+ " - timeout nein button not found")
