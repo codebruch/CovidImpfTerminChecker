@@ -98,4 +98,5 @@ while TerminFound:
 
 
 print(str(datetime.now()) + " - termin?" )
-time.sleep(20000)   
+while True:
+    time.sleep(20000)   
