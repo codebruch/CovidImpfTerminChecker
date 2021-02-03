@@ -1,1 +1,1 @@
-# H1 Selenium um zu guggen ob man einen impftermin hat
+# Selenium based grabber to find an Artest based Impftermin for corona.
