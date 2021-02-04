@@ -92,6 +92,8 @@ while TerminFound:
             print(str(datetime.now()) + " @ "+plz+ " - neinButton click")
             count = 0
             while count < 4:
+                if TerminFound == False:
+                    break
                 response = WebDriverWait(driver, 60).until(ec.presence_of_element_located((By.XPATH, './/html/body/app-root/div/app-page-its-login/div/div/div[2]/app-its-login-user/div/div/app-corona-vaccination/div[3]/div/div/div/div[2]/div/div/div')))
                 try:  
                     txtTmp = response.text
