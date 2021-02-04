@@ -107,11 +107,11 @@ while TerminFound:
                 time.sleep(3)
                 count = count + 1
                 if 'Bitte warten' not in txtTmp:
-                    #if txtTmp == 'Es wurden keine freien Termine in Ihrer Region gefunden. Bitte probieren Sie es später erneut.\n\nSobald genügend Impfstoff und die entsprechenden Kapazitäten vorhanden sind, werden die Impfzentren weitere Termine einstellen.':
-                    print(str(datetime.now()) + " @ "+plz+" - Kein Termin in " + plz )
-                    count = 4
+                    if 'Es wurden keine freien Termine' in txtTmp:
+                        print(str(datetime.now()) + " @ "+plz+" - Kein Termin in " + plz )
+                        count = 4
 
-                else:
+                    else:
                         print(str(datetime.now()) + " @ "+plz+ " - termin?" )
                         print(str(txtTmp))
                         TerminFound = False
