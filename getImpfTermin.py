@@ -21,11 +21,13 @@ import platform
 from playsound import playsound
 
 calledTimes = 0
+ExtDebug = False
 
 #Table Structure
 
 locale.setlocale(locale.LC_ALL, 'de_DE.UTF-8') # 
-print(os.getcwd())
+if ExtDebug:
+    print(os.getcwd())
 
 
 
@@ -67,6 +69,8 @@ urls = ["https://005-iz.impfterminservice.de/impftermine/service?plz=71636",
 
 #/html/body/app-root/div/app-page-its-login/div/div/div[2]/app-its-login-user/div/div/app-corona-vaccination/div[2]/div/div/label[2]/span
 TerminFound = True
+
+
 while TerminFound:
     for url in urls:
         plz = url.split('plz=')[1]
@@ -80,16 +84,19 @@ while TerminFound:
             cookiesButton = driver.find_elements_by_xpath('.//html/body/app-root/div/div/div/div[2]/div[2]/div/div[1]/a')
             if len(cookiesButton) > 0:
                 cookiesButton[0].click()
-                print(str(datetime.now()) + " @ "+plz+ " - cookiesButton click")
+                if ExtDebug:
+                    print(str(datetime.now()) + " @ "+plz+ " - cookiesButton click")
             else:
-                print(str(datetime.now()) + " @ "+plz+ " - cookiesButton notfound")
+                if ExtDebug:
+                    print(str(datetime.now()) + " @ "+plz+ " - cookiesButton notfound")
 
 
         
 
             neinButton = WebDriverWait(driver, 60).until(ec.presence_of_element_located((By.XPATH, './/html/body/app-root/div/app-page-its-login/div/div/div[2]/app-its-login-user/div/div/app-corona-vaccination/div[2]/div/div/label[2]/span')))
             neinButton.click()
-            print(str(datetime.now()) + " @ "+plz+ " - neinButton click")
+            if ExtDebug:
+                print(str(datetime.now()) + " @ "+plz+ " - neinButton click")
             count = 0
             while count < 4:
                 if TerminFound == False:
@@ -102,16 +109,26 @@ while TerminFound:
                     print(e)
                     continue  
 
-                print(str(datetime.now()) + " @ "+plz+ ' - Antwort: ' + txtTmp )
+                if ExtDebug:
+                    print(str(datetime.now()) + " @ "+plz+ ' - Antwort: ' + txtTmp )
             
                 time.sleep(3)
+                print('txtTmp before check with in comp: ' + str(txtTmp))
                 count = count + 1
                 if 'Bitte warten' not in txtTmp:
                     if 'Es wurden keine freien Termine' in txtTmp:
-                        print(str(datetime.now()) + " @ "+plz+" - Kein Termin in " + plz )
+                        print('////////////////////////////////////////////////////////////////////')
+                        print('Comp: Es wurden keine freien Termine in txtTmp')
+                        print('////////////////////////////////////////////////////////////////////')
+                        if ExtDebug:
+                            print(str(datetime.now()) + " @ "+plz+" - Kein Termin in " + plz )
                         count = 4
 
                     else:
+                        print('********************************************************************')
+                        print('Comp: Es wurden keine freien Termine NOT in txtTmp')
+                        print('********************************************************************')
+
                         print(str(datetime.now()) + " @ "+plz+ " - termin?" )
                         print(str(txtTmp))
                         TerminFound = False
