@@ -73,6 +73,7 @@ TerminFound = True
 
 while TerminFound:
     for url in urls:
+        print('---------------------------------------------------------------------------------------')
         plz = url.split('plz=')[1]
         #playsound(huh)
 
