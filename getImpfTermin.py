@@ -121,6 +121,6 @@ while TerminFound:
             print(str(datetime.now()) + " @ "+plz+ " - timeout nein button not found")
 
         
-    print(str(datetime.now()) + " @ "+plz+ " - termin?" )
+print(str(datetime.now()) + " @ "+plz+ " - termin?" )
 while True:
     time.sleep(20000)   
